@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{% if editing %}Edit{% else %}New{% endif %} Message | NexusChat{% endblock %}
+{% block page_title %}{% if editing %}Edit Message{% else %}New Message{% endif %}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:750px">
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group">
+        <label>Sender</label>
+        <input type="text" name="sender" value="{{ record.sender|default:'' }}">
+      </div>
+      <div class="form-group">
+        <label>Channel Name</label>
+        <input type="text" name="channel_name" value="{{ record.channel_name|default:'' }}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Content</label>
+      <textarea name="content">{{ record.content|default:'' }}</textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Message Type</label>
+        <select name="message_type">
+          <option value="text" {% if record.message_type == 'text' %}selected{% endif %}>Text</option>
+          <option value="file" {% if record.message_type == 'file' %}selected{% endif %}>File</option>
+          <option value="image" {% if record.message_type == 'image' %}selected{% endif %}>Image</option>
+          <option value="link" {% if record.message_type == 'link' %}selected{% endif %}>Link</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Sent At</label>
+        <input type="date" name="sent_at" value="{{ record.sent_at|date:'Y-m-d'|default:'' }}">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="checkbox-wrapper">
+        <input type="checkbox" name="pinned" id="id_pinned" {% if record.pinned %}checked{% endif %}>
+        <label for="id_pinned" style="margin-bottom:0">Pinned</label>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;margin-top:1rem">
+      <button type="submit" class="btn btn-primary">{% if editing %}Update{% else %}Create{% endif %} Message</button>
+      <a href="/messages/" class="btn" style="background:var(--border);color:var(--text)">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

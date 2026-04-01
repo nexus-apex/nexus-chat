@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{% if editing %}Edit{% else %}New{% endif %} Channel | NexusChat{% endblock %}
+{% block page_title %}{% if editing %}Edit Channel{% else %}New Channel{% endif %}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:750px">
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" value="{{ record.name|default:'' }}">
+      </div>
+      <div class="form-group">
+        <label>Channel Type</label>
+        <select name="channel_type">
+          <option value="public" {% if record.channel_type == 'public' %}selected{% endif %}>Public</option>
+          <option value="private" {% if record.channel_type == 'private' %}selected{% endif %}>Private</option>
+          <option value="direct" {% if record.channel_type == 'direct' %}selected{% endif %}>Direct</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea name="description">{{ record.description|default:'' }}</textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Member Count</label>
+        <input type="number" name="member_count" value="{{ record.member_count|default:'0' }}">
+      </div>
+      <div class="form-group">
+        <label>Created By</label>
+        <input type="text" name="created_by" value="{{ record.created_by|default:'' }}">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="checkbox-wrapper">
+        <input type="checkbox" name="active" id="id_active" {% if record.active %}checked{% endif %}>
+        <label for="id_active" style="margin-bottom:0">Active</label>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;margin-top:1rem">
+      <button type="submit" class="btn btn-primary">{% if editing %}Update{% else %}Create{% endif %} Channel</button>
+      <a href="/channels/" class="btn" style="background:var(--border);color:var(--text)">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

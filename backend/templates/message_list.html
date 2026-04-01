@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Messages | NexusChat{% endblock %}
+{% block page_title %}Messages{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+  <form class="search-bar" method="get" style="flex:1;margin-bottom:0">
+    <input type="text" name="search" value="{{ search }}" placeholder="Search messages...">
+    <select name="status" onchange="this.form.submit()">
+      <option value="">All Message Type</option>
+      <option value="text" {% if status_filter == 'text' %}selected{% endif %}>Text</option>
+      <option value="file" {% if status_filter == 'file' %}selected{% endif %}>File</option>
+      <option value="image" {% if status_filter == 'image' %}selected{% endif %}>Image</option>
+      <option value="link" {% if status_filter == 'link' %}selected{% endif %}>Link</option>
+    </select>
+    <button type="submit" class="btn btn-primary btn-sm">Search</button>
+  </form>
+  <a href="/messages/create/" class="btn btn-primary">+ New Message</a>
+</div>
+
+<div class="card">
+  {% if records %}
+  <table>
+    <thead>
+      <tr><th>Sender</th><th>Channel Name</th><th>Message Type</th><th>Sent At</th><th>Pinned</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for r in records %}
+      <tr>
+        <td><a href="/messages/{{ r.pk }}/edit/"><strong>{{ r.sender }}</strong></a></td>
+        <td>{{ r.channel_name|default:"-" }}</td>
+        <td><span class="badge badge-blue">{{ r.get_message_type_display }}</span></td>
+        <td style="color:var(--muted)">{{ r.sent_at|date:"M d, Y"|default:"-" }}</td>
+        <td><span class="badge {{ r.pinned|yesno:\"badge-green,badge-red\" }}">{{ r.pinned|yesno:\"Yes,No\" }}</span></td>
+        <td class="actions">
+          <a href="/messages/{{ r.pk }}/edit/" class="btn btn-primary btn-sm">Edit</a>
+          <form method="post" action="/messages/{{ r.pk }}/delete/" style="display:inline" onsubmit="return confirm('Delete?')">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Del</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">
+    <p>No messages found.</p>
+    <a href="/messages/create/" class="btn btn-primary" style="margin-top:1rem">Create Message</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

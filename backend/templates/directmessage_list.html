@@ -28,7 +28,7 @@
         <td><a href="/directmessages/{{ r.pk }}/edit/"><strong>{{ r.sender }}</strong></a></td>
         <td>{{ r.receiver|default:"-" }}</td>
         <td style="color:var(--muted)">{{ r.sent_at|date:"M d, Y"|default:"-" }}</td>
-        <td><span class="badge {{ r.read|yesno:\"badge-green,badge-red\" }}">{{ r.read|yesno:\"Yes,No\" }}</span></td>
+        <td><span class="badge {{ r.read|yesno:"badge-green,badge-red" }}">{{ r.read|yesno:"Yes,No" }}</span></td>
         <td><span class="badge badge-blue">{{ r.get_message_type_display }}</span></td>
         <td class="actions">
           <a href="/directmessages/{{ r.pk }}/edit/" class="btn btn-primary btn-sm">Edit</a>

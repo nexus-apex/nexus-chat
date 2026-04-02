@@ -31,7 +31,7 @@
       {% for r in recent %}
       <tr>
         <td><a href="/channels/{{ r.pk }}/edit/">{{ r.name }}</a></td>
-        <td><span class="badge badge-blue">{{ r.get_channel_type_display }}</span></td><td>{{ r.member_count|default:"-" }}</td><td>{{ r.created_by|default:"-" }}</td><td><span class="badge {{ r.active|yesno:\"badge-green,badge-red\" }}">{{ r.active|yesno:\"Yes,No\" }}</span></td><td style="color:var(--muted)">{{ r.created_at|date:"M d, Y" }}</td>
+        <td><span class="badge badge-blue">{{ r.get_channel_type_display }}</span></td><td>{{ r.member_count|default:"-" }}</td><td>{{ r.created_by|default:"-" }}</td><td><span class="badge {{ r.active|yesno:"badge-green,badge-red" }}">{{ r.active|yesno:"Yes,No" }}</span></td><td style="color:var(--muted)">{{ r.created_at|date:"M d, Y" }}</td>
       </tr>
       {% endfor %}
     </tbody>
